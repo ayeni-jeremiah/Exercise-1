@@ -24,6 +24,8 @@ public class CardScheme {
 	
 	private int count;
 
+	public CardScheme() {}
+	
 	public CardScheme(String cardNo, String scheme, String type, String bank, int count) {
 		super();
 		this.cardNo = cardNo;

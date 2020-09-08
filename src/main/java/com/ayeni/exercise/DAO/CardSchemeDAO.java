@@ -11,7 +11,7 @@ public class CardSchemeDAO {
 	CardSchemeRepository cardSchemeRepository;
 
 	public Optional<CardScheme> getCardDetails(String cardNo) {
-		return cardSchemeRepository.findById(cardNo);
+		return cardSchemeRepository.findByCardNumber(cardNo);
 	}
 
 	public int getCurrentCount(CardScheme card) {
