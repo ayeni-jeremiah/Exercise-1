@@ -23,9 +23,8 @@ public class ExerciseController {
 
 	@GetMapping("/")
 	String sayHello() {
-		Optional<CardScheme> thisCard = cardSchemeDAO.getCardDetails2();
 
-		return thisCard.get().toString();
+		return "Hello";
 	}
 
 	// get details of a card number
@@ -51,15 +50,15 @@ public class ExerciseController {
 	public ResponseEntity<Object> count(@RequestParam String start, @RequestParam String limit) {
 		int startNo, limitNo;
 		try {
-			startNo = Integer.parseInt(start);			
+			startNo = Integer.parseInt(start);
 			limitNo = Integer.parseInt(limit);
 		} catch (Exception e) {
 			return ResponseHandler.invalidEntry(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		List<CardScheme> retrievedCards = cardSchemeDAO.getCards(limitNo, startNo);
 		long size = (int) cardSchemeDAO.getTotalCards();
-		
+
 		return ResponseHandler.getStats(HttpStatus.OK, true, startNo, limitNo, size, retrievedCards);
 
 	}

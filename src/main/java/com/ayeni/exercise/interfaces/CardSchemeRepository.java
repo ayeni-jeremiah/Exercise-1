@@ -8,11 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.ayeni.exercise.models.CardScheme;
 
+
 public interface CardSchemeRepository extends CrudRepository<CardScheme, Integer> {
 
-	@Query(value = "select * from CardScheme LIMIT %?1 OFFSET %?2", nativeQuery = true)
-	List<CardScheme> findCardWithinLimit(int limit, int offset);
-	
-	@Query(value = "select * from CardScheme c where c.cardNo = %?1", nativeQuery = true)
-	Optional<CardScheme> findByCardNumber(String cardNumber);
+//	@Query(value = "select * from CardScheme LIMIT %?1 OFFSET %?2", nativeQuery = true)
+//	List<CardScheme> findCardWithinLimit(int limit, int offset);
+//	
+//	@Query(value = "select * from CardScheme c where c.cardNo = %?1", nativeQuery = true)
+//	Optional<CardScheme> findByCardNumber(String cardNumber);
 }
