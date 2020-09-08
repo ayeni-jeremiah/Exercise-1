@@ -3,6 +3,7 @@ package com.ayeni.exercise.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ayeni.exercise.DAO.CardSchemeDAO;
 import com.ayeni.exercise.DAO.ResponseHandler;
-import com.ayeni.exercise.interfaces.CardSchemeRepository;
 import com.ayeni.exercise.models.CardScheme;
 
 @RestController
 public class ExerciseController {
 
-	CardSchemeRepository cardSchemeRepository;
-	CardSchemeDAO cardSchemeDAO = new CardSchemeDAO();
+	@Autowired
+	CardSchemeDAO cardSchemeDAO;
 
 	@GetMapping("/")
 	String sayHello() {
@@ -35,10 +35,12 @@ public class ExerciseController {
 		Optional<CardScheme> thisCard = cardSchemeDAO.getCardDetails(cardNumber);
 
 		if (thisCard.isPresent()) {
+			CardScheme card = thisCard.get();
 			// get current card hit counts
-			int currentCount = cardSchemeDAO.getCurrentCount(thisCard.get());
-			thisCard.get().setCount(currentCount++);
-			cardSchemeRepository.save(thisCard.get());
+			int currentCount = cardSchemeDAO.getCurrentCount(card);
+			int newNo = currentCount + 1;
+			card.setCount(newNo);
+			cardSchemeDAO.save(card);
 
 			return ResponseHandler.getCardDetails(HttpStatus.OK, true, thisCard);
 		}
@@ -60,6 +62,16 @@ public class ExerciseController {
 		long size = (int) cardSchemeDAO.getTotalCards();
 
 		return ResponseHandler.getStats(HttpStatus.OK, true, startNo, limitNo, size, retrievedCards);
+
+	}
+
+	@GetMapping("/card-scheme/stats/")
+	public ResponseEntity<Object> count() {
+
+		Iterable<CardScheme> retrievedCards = cardSchemeDAO.getCards();
+		long size = (int) cardSchemeDAO.getTotalCards();
+
+		return ResponseHandler.getStats(HttpStatus.OK, true, 1, 0, size, (List<CardScheme>) retrievedCards);
 
 	}
 }

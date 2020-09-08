@@ -27,8 +27,10 @@ public class ExerciseApplication {
 					"4000180000000002" };
 
 			for (int i = 0; i < 20; i++) {
-				cardSchemeRepository.save(new CardScheme(cards[i], schemes[(int) Math.random() * 3], "debit",
-						banks[(int) Math.random() * 3], 0));
+				int rand = (int) Math.round(Math.random()*2);
+				
+				cardSchemeRepository.save(new CardScheme(cards[i], schemes[rand], "debit",
+						banks[rand], 0));
 			}
 		};
 
