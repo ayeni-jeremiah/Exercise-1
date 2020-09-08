@@ -1,15 +1,11 @@
 package com.ayeni.exercise.DAO;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import com.ayeni.exercise.interfaces.CardSchemeRepository;
 import com.ayeni.exercise.models.CardScheme;
 
-@Component
 public class RunFirst {
+
 	CardSchemeRepository cardSchemeRepository;
-	
 //	@EventListener(ApplicationReadyEvent.class)
 	public void saveCardScheme() {
 		String[] banks = { "UBS", "FCMD", "" };
