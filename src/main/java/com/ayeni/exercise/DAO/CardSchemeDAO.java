@@ -11,7 +11,12 @@ public class CardSchemeDAO {
 	CardSchemeRepository cardSchemeRepository;
 
 	public Optional<CardScheme> getCardDetails(String cardNo) {
+		System.out.println(cardNo);
 		return cardSchemeRepository.findByCardNumber(cardNo);
+	}
+	
+	public Optional<CardScheme> getCardDetails2() {
+		return cardSchemeRepository.findByCardNumber("4166676667666746");
 	}
 
 	public int getCurrentCount(CardScheme card) {

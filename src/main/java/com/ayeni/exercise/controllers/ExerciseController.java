@@ -23,7 +23,9 @@ public class ExerciseController {
 
 	@GetMapping("/")
 	String sayHello() {
-		return "Hello";
+		Optional<CardScheme> thisCard = cardSchemeDAO.getCardDetails2();
+
+		return thisCard.get().toString();
 	}
 
 	// get details of a card number
