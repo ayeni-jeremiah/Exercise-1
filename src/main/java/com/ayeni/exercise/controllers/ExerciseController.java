@@ -19,12 +19,12 @@ import com.ayeni.exercise.models.CardScheme;
 public class ExerciseController {
 
 	@Autowired
-	CardSchemeDAO cardSchemeDAO;
+	private CardSchemeDAO cardSchemeDAO;
 
 	@GetMapping("/")
 	String sayHello() {
 
-		return "Hello";
+		return "Hello! from Ayeni Jeremiah";
 	}
 
 	// get details of a card number
@@ -36,20 +36,16 @@ public class ExerciseController {
 
 		if (thisCard.isPresent()) {
 			CardScheme card = thisCard.get();
-			// get current card hit counts
-			int currentCount = cardSchemeDAO.getCurrentCount(card);
-			int newNo = currentCount + 1;
-			card.setCount(newNo);
-			cardSchemeDAO.save(card);
-
+			cardSchemeDAO.updateCount(card);
 			return ResponseHandler.getCardDetails(HttpStatus.OK, true, thisCard);
 		}
 		return ResponseHandler.getCardDetails(HttpStatus.NOT_FOUND, false, thisCard);
-
 	}
 
+	// get statistics of limited number of cards based on their searches
+	// card-scheme/stats?start={start}&limit={limit}
 	@GetMapping("/card-scheme/stats")
-	public ResponseEntity<Object> count(@RequestParam String start, @RequestParam String limit) {
+	public ResponseEntity<Object> stats(@RequestParam String start, @RequestParam String limit) {
 		int startNo, limitNo;
 		try {
 			startNo = Integer.parseInt(start);
@@ -58,18 +54,20 @@ public class ExerciseController {
 			return ResponseHandler.invalidEntry(HttpStatus.BAD_REQUEST);
 		}
 
-		List<CardScheme> retrievedCards = cardSchemeDAO.getCards(limitNo, startNo);
-		long size = (int) cardSchemeDAO.getTotalCards();
+		List<CardScheme> retrievedCards = cardSchemeDAO.getCardsByOffset(limitNo, startNo);
+		long size = (int) cardSchemeDAO.getTotalCardsCounts();
 
 		return ResponseHandler.getStats(HttpStatus.OK, true, startNo, limitNo, size, retrievedCards);
 
 	}
 
+	// get statistics of all cards based on their searches
+	// card-scheme/stats/
 	@GetMapping("/card-scheme/stats/")
-	public ResponseEntity<Object> count() {
+	public ResponseEntity<Object> all() {
 
-		Iterable<CardScheme> retrievedCards = cardSchemeDAO.getCards();
-		long size = (int) cardSchemeDAO.getTotalCards();
+		Iterable<CardScheme> retrievedCards = cardSchemeDAO.getAllCards();
+		long size = (int) cardSchemeDAO.getTotalCardsCounts();
 
 		return ResponseHandler.getStats(HttpStatus.OK, true, 1, 0, size, (List<CardScheme>) retrievedCards);
 

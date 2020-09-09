@@ -1,10 +1,13 @@
 package com.ayeni.exercise.DAO;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ayeni.exercise.interfaces.CardSchemeRepository;
 import com.ayeni.exercise.models.CardScheme;
 
 public class RunFirst {
 
+	@Autowired
 	CardSchemeRepository cardSchemeRepository;
 //	@EventListener(ApplicationReadyEvent.class)
 	public void saveCardScheme() {

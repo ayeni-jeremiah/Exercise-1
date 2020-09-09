@@ -13,7 +13,7 @@ import com.ayeni.exercise.models.CardScheme;
 public class CardSchemeDAO {
 
 	@Autowired
-	CardSchemeRepository cardSchemeRepository;
+	private CardSchemeRepository cardSchemeRepository;
 
 	public Optional<CardScheme> getCardDetails(String cardNo) {
 		return cardSchemeRepository.findByCardNumber(cardNo);
@@ -22,8 +22,17 @@ public class CardSchemeDAO {
 	public int getCurrentCount(CardScheme card) {
 		return card.getCount();
 	}
+	
+	public void updateCount(CardScheme card) {
+		// get current card hit counts
+		int currentCount = getCurrentCount(card);
+		int newNo = currentCount + 1;
+		card.setCount(newNo);
+		save(card);
+	}
 
-	public List<CardScheme> getCards(int limit, int start) {
+	//get cards based on specified constraints
+	public List<CardScheme> getCardsByOffset(int limit, int start) {
 		int offset = start - 1;
 		if (limit < 0 && start > 0) {
 			return cardSchemeRepository.findCardWithinLimit(1, offset);
@@ -36,15 +45,15 @@ public class CardSchemeDAO {
 		}
 	}
 
-	public long getTotalCards() {
+	public long getTotalCardsCounts() {
 		return cardSchemeRepository.count();
 	}
 	
-	public Iterable<CardScheme> getCards() {
+	public Iterable<CardScheme> getAllCards() {
 		return cardSchemeRepository.findAll();
 	}
 	
-	public void save(CardScheme card) {
-		cardSchemeRepository.save(card);
+	public CardScheme save(CardScheme card) {
+		return cardSchemeRepository.save(card);
 	}
 }
